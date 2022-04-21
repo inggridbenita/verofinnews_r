@@ -39,4 +39,4 @@ df <- data.frame(
   category = category_vector
 )
 
-write.csv(df, "./res/news.csv", row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(df, "./res/datasets/news.csv", row.names = FALSE, fileEncoding = "UTF-8")
