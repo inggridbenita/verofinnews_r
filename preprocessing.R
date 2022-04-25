@@ -23,9 +23,8 @@ for (a in 0:9) {
   df$title <- str_replace_all(df$title, paste(a), " ")
 }
 
+# Mengganti tanda baca dengan spasi
 punctuations <- c(
-  "\\.",
-  ",",
   ";",
   "\\(",
   "\\)",
@@ -33,38 +32,34 @@ punctuations <- c(
   "\\|",
   "\\?",
   ":",
-  "'",
   "\"",
   "#",
   "-",
   "/",
   "\\[",
   "\\]",
-  "\\*"
+  "\\*",
+  '%'
 )
 for (punctuation in punctuations) {
   df$content <- str_replace_all(df$content, punctuation, " ")
   df$title <- str_replace_all(df$title, punctuation, " ")
 }
 
+# Menghapus tanda baca
+punctuations <- "'"
+for (punctuation in punctuations) {
+  df$content <- str_replace_all(df$content, punctuation, "")
+  df$title <- str_replace_all(df$title, punctuation, "")
+}
+
+# Menghapus kelebihan spasi
 df$content <- str_squish(df$content)
 df$title <- str_squish(df$title)
 
+# Mengubah ke lowercase
 df$content <- tolower(df$content)
 df$title <- tolower(df$title)
-
-# Menghapus stop words
-stop.words <- fromJSON(file = "./res/stop_words.json")
-for (i in seq_len(nrow(df))) {
-  content <- df[i, "content"]
-  title <- df[i, "title"]
-  for (word in stop.words) {
-    content <- remove.word(content, word)
-    title <- remove.word(title, word)
-  }
-  df[i, "content"] <- content
-  df[i, "title"] <- title
-}
 
 # Menangani sinonim
 word_sinonim <- fromJSON(file = "./res/synonym.json")
@@ -80,5 +75,5 @@ for (i in seq_len(nrow(df))) {
   df[i, "content"] <- content
 }
 
-## buat bikinfile csv
-write.csv(df, './res/datasets/nyamnya.csv', row.names = FALSE)
+# buat bikin file csv
+write.csv(df, './res/datasets/news_preprocessed.csv', row.names = FALSE, fileEncoding = "UTF-8")
