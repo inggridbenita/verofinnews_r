@@ -39,4 +39,9 @@ df <- data.frame(
   category = category_vector
 )
 
+df$date <- as.POSIXct(df$date)
+df$weekday <- weekdays(as.Date(df$date))
+
+df <- df[, c(1, 2, 4, 3, 8, 7, 5, 6)]
+
 write.csv(df, "./res/datasets/news.csv", row.names = FALSE, fileEncoding = "UTF-8")
